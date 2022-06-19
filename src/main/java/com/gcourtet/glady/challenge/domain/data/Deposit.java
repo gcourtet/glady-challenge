@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class Deposit {
-    private long id;
+    private Long id;
     private LocalDate issueDate;
     private LocalDate expirationDate;
     private DepositType type;

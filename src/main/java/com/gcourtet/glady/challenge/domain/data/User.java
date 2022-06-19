@@ -4,12 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class User {
-    private long id;
-    private long companyId;
+    private Long id;
+    private UUID companyId;
     private String name;
     private List<Deposit> deposits;
 }
