@@ -23,8 +23,8 @@ public class DepositServiceImpl implements DepositService {
     private final UserRepository userRepository;
 
     @Override
-    public double createDeposit(final Long companyId,
-                                final double amountToAdd,
+    public Double createDeposit(final Long companyId,
+                                final Double amountToAdd,
                                 final DepositType depositType,
                                 final Long userId) {
         var company = companyRepository.getCompany(companyId);
@@ -61,7 +61,9 @@ public class DepositServiceImpl implements DepositService {
         return user.getBalanceForType(depositType);
     }
 
-    private void checkCompanyBalance(Long companyId, double amountToAdd, double companyBalance) {
+    private void checkCompanyBalance(final Long companyId,
+                                     final Double amountToAdd,
+                                     final Double companyBalance) {
         if (companyBalance < amountToAdd) {
             var message = String.format("Unable to process deposit as company's balance is too low for company %d (Needed = %.2f - Available = %.2f",
                     companyId,

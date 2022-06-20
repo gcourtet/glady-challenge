@@ -39,7 +39,7 @@ class CompanyServiceImplTest {
     @ParameterizedTest(name = "Should create company [{0}] with balance {1}")
     @ArgumentsSource(CompanyCreationProvider.class)
     void should_return_created_company(final String companyName,
-                                       final double initialBalance) {
+                                       final Double initialBalance) {
         var createdCompany = Company.builder()
                 .name(companyName)
                 .balance(initialBalance)
@@ -98,8 +98,8 @@ class CompanyServiceImplTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
             return Stream.of(
-                    Arguments.of("coolCompany", 0),
-                    Arguments.of("", 10),
+                    Arguments.of("coolCompany", 0.0),
+                    Arguments.of("", 10.1),
                     Arguments.of("prettyBigCompany", 10000.99)
             );
         }
