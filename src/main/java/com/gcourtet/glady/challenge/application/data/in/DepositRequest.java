@@ -20,7 +20,7 @@ public class DepositRequest {
     private Long userId;
     @NotNull
     @Min(value = 0)
-    private double amount;
+    private Double amount;
     @NotNull
     private DepositType type;
 }

@@ -18,5 +18,5 @@ public class CompanyCreationRequest {
     @NotBlank
     private String name;
     @Min(value = 0)
-    private double initialBalance;
+    private Double initialBalance;
 }

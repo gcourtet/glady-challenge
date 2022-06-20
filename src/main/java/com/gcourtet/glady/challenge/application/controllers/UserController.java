@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
@@ -28,5 +29,11 @@ public class UserController {
     public User getUser(@PathVariable final Long userId) {
         log.info("Received request to get user: {}", userId);
         return userService.getUser(userId);
+    }
+
+    @GetMapping("/{userId}/balance")
+    public Map<String, Double> getUserBalance(@PathVariable final Long userId) {
+        log.info("Received request to get balance for user: {}", userId);
+        return userService.getUserBalance(userId);
     }
 }

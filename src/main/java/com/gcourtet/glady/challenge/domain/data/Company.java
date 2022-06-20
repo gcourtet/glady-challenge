@@ -12,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Company {
-    private long id;
+    private Long id;
     private String name;
-    private double balance;
+    private Double balance;
     private List<User> employees;
 }

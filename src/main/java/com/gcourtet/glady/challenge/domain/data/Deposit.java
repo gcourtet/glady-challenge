@@ -17,5 +17,5 @@ public class Deposit {
     private LocalDate issueDate;
     private LocalDate expirationDate;
     private DepositType type;
-    private double value;
+    private Double value;
 }

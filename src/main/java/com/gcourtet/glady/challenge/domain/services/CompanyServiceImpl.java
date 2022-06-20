@@ -20,7 +20,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company createCompany(final String companyName,
-                                 final double initialBalance) {
+                                 final Double initialBalance) {
         if (initialBalance < 0) {
             log.error("Can't create company {} with negative balance {}",
                     companyName,
@@ -51,8 +51,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public double addToBalance(final Long companyId,
-                               final double amountToAdd) {
+    public Double addToBalance(final Long companyId,
+                               final Double amountToAdd) {
         var company = companyRepository.getCompany(companyId);
 
         if (null == company) {

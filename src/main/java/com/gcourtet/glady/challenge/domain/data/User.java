@@ -18,11 +18,11 @@ public class User {
     private String name;
     private List<Deposit> deposits;
 
-    public double getBalanceForType(final DepositType depositType) {
+    public Double getBalanceForType(final DepositType depositType) {
         var today = LocalDate.now();
 
         if (null == deposits) {
-            return 0;
+            return 0.0;
         }
 
         return deposits.stream()

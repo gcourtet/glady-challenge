@@ -3,6 +3,7 @@ package com.gcourtet.glady.challenge.domain.services;
 import com.gcourtet.glady.challenge.common.exception.NotFoundException;
 import com.gcourtet.glady.challenge.common.exception.UserCreationException;
 import com.gcourtet.glady.challenge.domain.data.Company;
+import com.gcourtet.glady.challenge.domain.data.DepositType;
 import com.gcourtet.glady.challenge.domain.data.User;
 import com.gcourtet.glady.challenge.domain.port.in.UserService;
 import com.gcourtet.glady.challenge.domain.port.out.CompanyRepository;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -58,5 +61,25 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    @Override
+    public Map<String, Double> getUserBalance(final Long userId) {
+        var user = userRepository.getUser(userId);
+
+        if (null == user) {
+            var message = String.format("No user found for id %d", userId);
+            log.error(message);
+            throw new NotFoundException(message);
+        }
+
+        Map<String, Double> balances = new HashMap<>();
+        var giftBalance = user.getBalanceForType(DepositType.GIFT);
+        var mealBalance = user.getBalanceForType(DepositType.MEAL);
+        balances.put(DepositType.MEAL.name(), mealBalance);
+        balances.put(DepositType.GIFT.name(), giftBalance);
+        balances.put("TOTAL", mealBalance + giftBalance);
+
+        return balances;
     }
 }

@@ -33,7 +33,7 @@ class CompanyServiceImplTest {
     @Test
     void should_throw_exception_if_balance_is_negative() {
         assertThrows(CompanyCreationException.class,
-                () -> companyService.createCompany("name", -1));
+                () -> companyService.createCompany("name", -1.0));
     }
 
     @ParameterizedTest(name = "Should create company [{0}] with balance {1}")
@@ -82,7 +82,7 @@ class CompanyServiceImplTest {
     @Test
     void should_return_new_balance_when_adding_to_balance() {
         var company = mock(Company.class);
-        company.setBalance(0);
+        company.setBalance(0.0);
         when(companyRepository.getCompany(anyLong())).thenReturn(company);
 
         var id = 45678L;

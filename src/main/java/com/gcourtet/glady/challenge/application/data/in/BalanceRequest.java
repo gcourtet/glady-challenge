@@ -15,5 +15,5 @@ import javax.validation.constraints.NotNull;
 public class BalanceRequest {
     @NotNull
     @Min(value = 0)
-    private double amount;
+    private Double amount;
 }

@@ -3,6 +3,8 @@ package com.gcourtet.glady.challenge.domain.services;
 import com.gcourtet.glady.challenge.common.exception.NotFoundException;
 import com.gcourtet.glady.challenge.common.exception.UserCreationException;
 import com.gcourtet.glady.challenge.domain.data.Company;
+import com.gcourtet.glady.challenge.domain.data.Deposit;
+import com.gcourtet.glady.challenge.domain.data.DepositType;
 import com.gcourtet.glady.challenge.domain.data.User;
 import com.gcourtet.glady.challenge.domain.port.out.CompanyRepository;
 import com.gcourtet.glady.challenge.domain.port.out.UserRepository;
@@ -18,7 +20,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,6 +109,61 @@ class UserServiceImplTest {
 
         verify(userRepository, times(1)).getUser(id);
         assertThat(result).isEqualTo(user);
+    }
+
+    @Test
+    void should_throw_not_found_exception_if_user_not_found_when_getting_user_balances() {
+        when(userRepository.getUser(anyLong())).thenReturn(null);
+
+        assertThrows(NotFoundException.class,
+                () -> userService.getUserBalance(1L));
+    }
+
+    @Test
+    void should_return_user_balances() {
+        var amountGift = 199.90;
+        var amountMeal = 800.05;
+
+        var depositGift = Deposit.builder()
+                .type(DepositType.GIFT)
+                .value(amountGift)
+                .expirationDate(LocalDate.MAX)
+                .build();
+
+        var depositMeal = Deposit.builder()
+                .type(DepositType.MEAL)
+                .value(amountMeal)
+                .expirationDate(LocalDate.MAX)
+                .build();
+
+        var depositExpiredMeal = Deposit.builder()
+                .type(DepositType.MEAL)
+                .value(amountGift)
+                .expirationDate(LocalDate.MIN)
+                .build();
+
+        var depositExpiredGift = Deposit.builder()
+                .type(DepositType.GIFT)
+                .value(amountMeal)
+                .expirationDate(LocalDate.MIN)
+                .build();
+
+        var user = User.builder()
+                .deposits(List.of(depositGift, depositMeal, depositExpiredMeal, depositExpiredGift))
+                .build();
+
+        when(userRepository.getUser(anyLong())).thenReturn(user);
+
+        var id = 45678L;
+
+        var result = userService.getUserBalance(id);
+
+        var expectedResult = Map.of("TOTAL", amountGift + amountMeal,
+                DepositType.GIFT.name(), amountGift,
+                DepositType.MEAL.name(), amountMeal);
+
+        verify(userRepository, times(1)).getUser(id);
+        assertThat(result).isEqualTo(expectedResult);
     }
 
     private static class UserCreationProvider implements ArgumentsProvider {
