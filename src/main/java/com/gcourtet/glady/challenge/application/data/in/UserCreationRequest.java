@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -13,10 +12,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class CompanyCreationRequest {
-    @NotNull
+public class UserCreationRequest {
+    private Long companyId;
     @NotBlank
+    @NotNull
     private String name;
-    @Min(value = 0)
-    private double initialBalance;
 }

@@ -1,5 +1,6 @@
-package com.gcourtet.glady.challenge.application;
+package com.gcourtet.glady.challenge.application.controllers;
 
+import com.gcourtet.glady.challenge.application.controllers.CompanyController;
 import com.gcourtet.glady.challenge.application.data.in.BalanceRequest;
 import com.gcourtet.glady.challenge.application.data.in.CompanyCreationRequest;
 import com.gcourtet.glady.challenge.domain.data.Company;
@@ -25,7 +26,7 @@ class CompanyControllerTest {
     private CompanyController companyController;
 
     @Test
-    void should_create_user_when_asked() {
+    void should_create_company_when_asked() {
         var companyCreated = mock(Company.class);
         var nameCaptor = ArgumentCaptor.forClass(String.class);
         var balanceCaptor = ArgumentCaptor.forClass(Double.class);

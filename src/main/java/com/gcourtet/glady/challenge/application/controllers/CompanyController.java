@@ -1,4 +1,4 @@
-package com.gcourtet.glady.challenge.application;
+package com.gcourtet.glady.challenge.application.controllers;
 
 import com.gcourtet.glady.challenge.application.data.in.BalanceRequest;
 import com.gcourtet.glady.challenge.application.data.in.CompanyCreationRequest;
