@@ -10,6 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Map;
+
+import static com.gcourtet.glady.challenge.domain.data.DepositType.GIFT;
+import static com.gcourtet.glady.challenge.domain.data.DepositType.MEAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -60,6 +64,24 @@ class UserControllerTest {
         verify(userService, times(1)).getUser(idCaptor.capture());
 
         assertThat(result).isEqualTo(user);
+        assertThat(id).isEqualTo(idCaptor.getValue());
+    }
+
+    @Test
+    void should_return_user_balance() {
+        var balances = Map.of(MEAL.name(), 111.1,
+                GIFT.name(), 222.2,
+                "TOTAL", 333.3);
+        var idCaptor = ArgumentCaptor.forClass(Long.class);
+        when(userService.getUserBalance(anyLong())).thenReturn(balances);
+
+        var id = 123L;
+
+        var result = userController.getUserBalance(id);
+
+        verify(userService, times(1)).getUserBalance(idCaptor.capture());
+
+        assertThat(result).isEqualTo(balances);
         assertThat(id).isEqualTo(idCaptor.getValue());
     }
 
