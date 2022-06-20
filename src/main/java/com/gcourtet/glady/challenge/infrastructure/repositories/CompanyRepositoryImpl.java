@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -16,12 +17,18 @@ public class CompanyRepositoryImpl implements CompanyRepository {
 
     private long latestId = 1;
 
+    @Override
     public Company createCompany(final Company companyToCreate) {
         companyToCreate.setId(latestId);
         companies.put(latestId++, companyToCreate);
         log.info("Company {} has been created.",
                 companyToCreate);
         return companyToCreate;
+    }
+
+    @Override
+    public Company getCompany(final Long companyId) {
+        return companies.get(companyId);
     }
 
     /* WARNING - ONLY USE THE FOLLOWING METHODS FOR TESTING */

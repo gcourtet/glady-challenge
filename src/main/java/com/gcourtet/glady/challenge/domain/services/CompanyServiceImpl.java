@@ -1,6 +1,7 @@
 package com.gcourtet.glady.challenge.domain.services;
 
 import com.gcourtet.glady.challenge.common.exception.CompanyCreationException;
+import com.gcourtet.glady.challenge.common.exception.NotFoundException;
 import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.port.in.CompanyService;
 import com.gcourtet.glady.challenge.domain.port.out.CompanyRepository;
@@ -17,6 +18,8 @@ import java.util.UUID;
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
+
+    @Override
     public Company createCompany(final String companyName,
                                  final double initialBalance) {
         if (initialBalance < 0) {
@@ -33,5 +36,18 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
 
         return companyRepository.createCompany(companyToCreate);
+    }
+
+    @Override
+    public Company getCompany(final Long companyId) {
+        var company = companyRepository.getCompany(companyId);
+
+        if (null == company) {
+            var message = String.format("No company found for id %d", companyId);
+            log.error(message);
+            throw new NotFoundException(message);
+        }
+
+        return company;
     }
 }

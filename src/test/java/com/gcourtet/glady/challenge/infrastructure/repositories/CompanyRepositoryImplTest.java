@@ -33,4 +33,25 @@ class CompanyRepositoryImplTest {
         assertThat(companyRepository.getCompanies().values()).containsExactlyInAnyOrder(existingCompany, companyToCreate);
     }
 
+    @Test
+    void should_return_null_if_company_not_found_in_memory() {
+        var existingCompany = mock(Company.class);
+        companyRepository.setCompanies(Map.of(1L, existingCompany));
+
+        var company = companyRepository.getCompany(123L);
+
+        assertThat(company).isNull();
+    }
+
+    @Test
+    void should_return_company_if_found_in_memory() {
+        var id = 1987L;
+        var existingCompany = mock(Company.class);
+        companyRepository.setCompanies(Map.of(id, existingCompany));
+
+        var company = companyRepository.getCompany(id);
+
+        assertThat(company).isEqualTo(existingCompany);
+    }
+
 }

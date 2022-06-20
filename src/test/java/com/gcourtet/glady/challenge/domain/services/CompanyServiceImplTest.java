@@ -1,6 +1,7 @@
 package com.gcourtet.glady.challenge.domain.services;
 
 import com.gcourtet.glady.challenge.common.exception.CompanyCreationException;
+import com.gcourtet.glady.challenge.common.exception.NotFoundException;
 import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.port.out.CompanyRepository;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,26 @@ class CompanyServiceImplTest {
 
         verify(companyRepository, times(1)).createCompany(any());
         assertThat(result).isEqualTo(createdCompany);
+    }
+
+    @Test
+    void should_throw_exception_if_company_not_found() {
+        when(companyRepository.getCompany(anyLong())).thenReturn(null);
+        assertThrows(NotFoundException.class,
+                () -> companyService.getCompany(1L));
+    }
+
+    @Test
+    void should_return_company_if_found() {
+        var company = mock(Company.class);
+        when(companyRepository.getCompany(anyLong())).thenReturn(company);
+
+        var id = 45678L;
+
+        var result = companyService.getCompany(id);
+
+        verify(companyRepository, times(1)).getCompany(id);
+        assertThat(result).isEqualTo(company);
     }
 
     private static class CompanyCreationProvider implements ArgumentsProvider {

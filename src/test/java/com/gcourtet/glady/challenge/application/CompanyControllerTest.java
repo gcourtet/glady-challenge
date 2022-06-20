@@ -5,20 +5,12 @@ import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.port.in.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.stream.Stream;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -54,4 +46,21 @@ class CompanyControllerTest {
         assertThat(initialBalance).isEqualTo(balanceCaptor.getValue());
         assertThat(name).isEqualTo(nameCaptor.getValue());
     }
+
+    @Test
+    void should_return_company() {
+        var company = mock(Company.class);
+        var idCaptor = ArgumentCaptor.forClass(Long.class);
+        when(companyService.getCompany(anyLong())).thenReturn(company);
+
+        var id = 123L;
+
+        var result = companyController.getCompany(id);
+
+        verify(companyService, times(1)).getCompany(idCaptor.capture());
+
+        assertThat(result).isEqualTo(company);
+        assertThat(id).isEqualTo(idCaptor.getValue());
+    }
+
 }

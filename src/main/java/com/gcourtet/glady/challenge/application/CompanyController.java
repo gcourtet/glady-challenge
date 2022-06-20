@@ -5,10 +5,7 @@ import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.port.in.CompanyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,7 +20,13 @@ public class CompanyController {
     @PostMapping
     public Company createCompany(@Valid @RequestBody final CompanyCreationRequest companyCreationRequest) {
         log.info("Received request to create company: {}", companyCreationRequest);
-        return this.companyService.createCompany(companyCreationRequest.getName(),
+        return companyService.createCompany(companyCreationRequest.getName(),
                 companyCreationRequest.getInitialBalance());
+    }
+
+    @GetMapping("/{companyId}")
+    public Company getCompany(@PathVariable final Long companyId) {
+        log.info("Received request to get company: {}", companyId);
+        return companyService.getCompany(companyId);
     }
 }

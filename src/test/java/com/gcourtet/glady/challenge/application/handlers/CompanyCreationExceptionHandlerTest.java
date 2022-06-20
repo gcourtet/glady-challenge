@@ -11,7 +11,7 @@ class CompanyCreationExceptionHandlerTest {
     private CompanyCreationExceptionHandler companyCreationExceptionHandler = new CompanyCreationExceptionHandler();
 
     @Test
-    void should_handle_company_creation_exception_exception() {
+    void should_handle_company_creation_exception() {
         var exception = new CompanyCreationException("Error message");
         var response = companyCreationExceptionHandler.companyCreationExceptionHandler(exception);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
