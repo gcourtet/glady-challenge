@@ -50,4 +50,21 @@ public class CompanyServiceImpl implements CompanyService {
 
         return company;
     }
+
+    @Override
+    public double addToBalance(final Long companyId,
+                               final double amountToAdd) {
+        var company = companyRepository.getCompany(companyId);
+
+        if (null == company) {
+            var message = String.format("No company found for id %d", companyId);
+            log.error(message);
+            throw new NotFoundException(message);
+        }
+
+        var newBalance = company.getBalance() + amountToAdd;
+        company.setBalance(newBalance);
+
+        return newBalance;
+    }
 }

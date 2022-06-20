@@ -72,6 +72,28 @@ class CompanyServiceImplTest {
         assertThat(result).isEqualTo(company);
     }
 
+    @Test
+    void should_throw_exception_if_company_not_found_when_adding_to_balance() {
+        when(companyRepository.getCompany(anyLong())).thenReturn(null);
+        assertThrows(NotFoundException.class,
+                () -> companyService.addToBalance(1L, 20.9));
+    }
+
+    @Test
+    void should_return_new_balance_when_adding_to_balance() {
+        var company = mock(Company.class);
+        company.setBalance(0);
+        when(companyRepository.getCompany(anyLong())).thenReturn(company);
+
+        var id = 45678L;
+        var amountToAdd = 12345.67;
+
+        var result = companyService.addToBalance(id, amountToAdd);
+
+        verify(companyRepository, times(1)).getCompany(id);
+        assertThat(result).isEqualTo(amountToAdd);
+    }
+
     private static class CompanyCreationProvider implements ArgumentsProvider {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {

@@ -1,5 +1,6 @@
 package com.gcourtet.glady.challenge.application;
 
+import com.gcourtet.glady.challenge.application.data.in.BalanceRequest;
 import com.gcourtet.glady.challenge.application.data.in.CompanyCreationRequest;
 import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.port.in.CompanyService;
@@ -61,6 +62,32 @@ class CompanyControllerTest {
 
         assertThat(result).isEqualTo(company);
         assertThat(id).isEqualTo(idCaptor.getValue());
+    }
+
+    @Test
+    void should_return_add_to_balance_and_return_new_balance() {
+        var amountToAdd = 700.0;
+        var newBalance = 701.23;
+        var idCaptor = ArgumentCaptor.forClass(Long.class);
+        var amountCaptor = ArgumentCaptor.forClass(Double.class);
+        when(companyService.addToBalance(anyLong(), anyDouble())).thenReturn(newBalance);
+        var id = 123L;
+        var request = BalanceRequest.builder()
+                .amount(amountToAdd)
+                .build();
+
+        var result = companyController.addToBalance(id, request);
+
+        verify(companyService, times(1)).addToBalance(idCaptor.capture(),
+                amountCaptor.capture());
+
+        var expectedResult = String.format("%.2f has been added to company balance. New balance is %.2f",
+                amountToAdd,
+                newBalance);
+
+        assertThat(result.getMessage()).isEqualTo(expectedResult);
+        assertThat(id).isEqualTo(idCaptor.getValue());
+        assertThat(amountToAdd).isEqualTo(amountCaptor.getValue());
     }
 
 }
