@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
         var userToCreate = User.builder()
                 .name(name)
+                .deposits(new ArrayList<>())
                 .companyId(companyId)
                 .build();
 

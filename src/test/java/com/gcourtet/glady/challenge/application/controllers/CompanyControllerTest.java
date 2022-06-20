@@ -66,7 +66,7 @@ class CompanyControllerTest {
     }
 
     @Test
-    void should_return_add_to_balance_and_return_new_balance() {
+    void should_add_to_balance_and_return_new_balance() {
         var amountToAdd = 700.0;
         var newBalance = 701.23;
         var idCaptor = ArgumentCaptor.forClass(Long.class);
