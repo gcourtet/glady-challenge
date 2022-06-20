@@ -5,10 +5,7 @@ import com.gcourtet.glady.challenge.domain.data.User;
 import com.gcourtet.glady.challenge.domain.port.in.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,5 +22,11 @@ public class UserController {
         log.info("Received request to create user: {}", userCreationRequest);
         return userService.createUser(userCreationRequest.getName(),
                 userCreationRequest.getCompanyId());
+    }
+
+    @GetMapping("/{userId}")
+    public User getUser(@PathVariable final Long userId) {
+        log.info("Received request to get user: {}", userId);
+        return userService.getUser(userId);
     }
 }

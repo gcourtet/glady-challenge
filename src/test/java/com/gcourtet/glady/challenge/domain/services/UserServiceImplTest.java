@@ -1,5 +1,6 @@
 package com.gcourtet.glady.challenge.domain.services;
 
+import com.gcourtet.glady.challenge.common.exception.NotFoundException;
 import com.gcourtet.glady.challenge.common.exception.UserCreationException;
 import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.data.User;
@@ -85,6 +86,25 @@ class UserServiceImplTest {
         assertThat(result).isEqualTo(createdUser);
     }
 
+    @Test
+    void should_throw_exception_if_user_not_found() {
+        when(userRepository.getUser(anyLong())).thenReturn(null);
+        assertThrows(NotFoundException.class,
+                () -> userService.getUser(1L));
+    }
+
+    @Test
+    void should_return_user_if_found() {
+        var user = mock(User.class);
+        when(userRepository.getUser(anyLong())).thenReturn(user);
+
+        var id = 45678L;
+
+        var result = userService.getUser(id);
+
+        verify(userRepository, times(1)).getUser(id);
+        assertThat(result).isEqualTo(user);
+    }
 
     private static class UserCreationProvider implements ArgumentsProvider {
         @Override

@@ -25,6 +25,11 @@ public class UserRepositoryImpl implements UserRepository {
         return userToCreate;
     }
 
+    @Override
+    public User getUser(final Long userId) {
+        return users.get(userId);
+    }
+
     /* WARNING - ONLY USE THE FOLLOWING METHODS FOR TESTING */
 
     public Map<Long, User> getUsers() {

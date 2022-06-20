@@ -1,5 +1,6 @@
 package com.gcourtet.glady.challenge.domain.services;
 
+import com.gcourtet.glady.challenge.common.exception.NotFoundException;
 import com.gcourtet.glady.challenge.common.exception.UserCreationException;
 import com.gcourtet.glady.challenge.domain.data.Company;
 import com.gcourtet.glady.challenge.domain.data.User;
@@ -38,6 +39,19 @@ public class UserServiceImpl implements UserService {
 
         if (null != company) {
             company.getEmployees().add(user);
+        }
+
+        return user;
+    }
+
+    @Override
+    public User getUser(final Long userId) {
+        var user = userRepository.getUser(userId);
+
+        if (null == user) {
+            var message = String.format("No user found for id %d", userId);
+            log.error(message);
+            throw new NotFoundException(message);
         }
 
         return user;

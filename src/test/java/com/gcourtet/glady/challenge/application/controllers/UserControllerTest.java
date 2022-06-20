@@ -46,4 +46,21 @@ class UserControllerTest {
         assertThat(companyId).isEqualTo(companyIdCaptor.getValue());
         assertThat(name).isEqualTo(nameCaptor.getValue());
     }
+
+    @Test
+    void should_return_user() {
+        var user = mock(User.class);
+        var idCaptor = ArgumentCaptor.forClass(Long.class);
+        when(userService.getUser(anyLong())).thenReturn(user);
+
+        var id = 123L;
+
+        var result = userController.getUser(id);
+
+        verify(userService, times(1)).getUser(idCaptor.capture());
+
+        assertThat(result).isEqualTo(user);
+        assertThat(id).isEqualTo(idCaptor.getValue());
+    }
+
 }
